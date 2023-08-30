@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import collections
 import contextlib
 import functools
 import inspect
-from typing import Any, Callable, Optional, Tuple, Union
+from typing import Any, Callable, Optional, Union
 
 import haiku as hk
 import jax
@@ -32,7 +32,7 @@ LayerStackScanned = collections.namedtuple('LayerStackScanned',
 # exact same type. We cannot express this with `typing`. So we just use it
 # to inform the user. In reality, the typing below will accept anything.
 NestedArray = Any
-WrappedFn = Callable[..., Union[NestedArray, Tuple[NestedArray]]]
+WrappedFn = Callable[..., Union[NestedArray, tuple[NestedArray]]]
 
 
 def _check_no_varargs(f):
@@ -160,7 +160,7 @@ class _LayerStack(hk.Module):
   def _call_wrapped(self,
                     x: jnp.ndarray,
                     *args,
-                    ) -> Tuple[jnp.ndarray, Optional[jnp.ndarray]]:
+                    ) -> tuple[jnp.ndarray, Optional[jnp.ndarray]]:
     raise NotImplementedError()
 
 

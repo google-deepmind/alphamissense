@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import dataclasses
 import itertools
 import re
 import string
-from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
+from typing import Iterable, Optional, Sequence
 
 # Internal import (7716).
 
@@ -61,11 +61,11 @@ class TemplateHit:
   sum_probs: Optional[float]
   query: str
   hit_sequence: str
-  indices_query: List[int]
-  indices_hit: List[int]
+  indices_query: list[int]
+  indices_hit: list[int]
 
 
-def parse_fasta(fasta_string: str) -> Tuple[Sequence[str], Sequence[str]]:
+def parse_fasta(fasta_string: str) -> tuple[Sequence[str], Sequence[str]]:
   """Parses FASTA string and returns list of strings with amino-acid sequences.
 
   Arguments:
@@ -254,7 +254,7 @@ def convert_stockholm_to_a3m(stockholm_format: str,
   return '\n'.join(fasta_chunks) + '\n'  # Include terminating newline.
 
 
-def _keep_line(line: str, seqnames: Set[str]) -> bool:
+def _keep_line(line: str, seqnames: set[str]) -> bool:
   """Function to decide which lines to keep."""
   if not line.strip():
     return True
@@ -381,7 +381,7 @@ def _get_hhr_line_regex_groups(
 
 
 def _update_hhr_residue_indices_list(
-    sequence: str, start_index: int, indices_list: List[int]):
+    sequence: str, start_index: int, indices_list: list[int]):
   """Computes the relative indices for each residue with respect to the original sequence."""
   counter = start_index
   for symbol in sequence:
@@ -506,7 +506,7 @@ def parse_hhr(hhr_string: str) -> Sequence[TemplateHit]:
   return hits
 
 
-def parse_e_values_from_tblout(tblout: str) -> Dict[str, float]:
+def parse_e_values_from_tblout(tblout: str) -> dict[str, float]:
   """Parse target to e-value mapping parsed from Jackhmmer tblout string."""
   e_values = {'query': 0}
   lines = [line for line in tblout.splitlines() if line[0] != '#']
@@ -521,7 +521,7 @@ def parse_e_values_from_tblout(tblout: str) -> Dict[str, float]:
   return e_values
 
 
-def _get_indices(sequence: str, start: int) -> List[int]:
+def _get_indices(sequence: str, start: int) -> list[int]:
   """Returns indices for non-gap/insert residues starting at the given index."""
   indices = []
   counter = start

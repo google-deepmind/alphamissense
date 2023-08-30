@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ def sharded_map(
 
 
 def sharded_apply(
-    fun: Callable[..., PYTREE_JAX_ARRAY],  # pylint: disable=g-bare-generic
+    fun: Callable[..., PYTREE_JAX_ARRAY],
     shard_size: Union[int, None] = 1,
     in_axes: Union[int, PYTREE] = 0,
     out_axes: Union[int, PYTREE] = 0,
@@ -206,14 +206,14 @@ def inference_subbatch(
   assert len(batched_args) > 0  # pylint: disable=g-explicit-length-test
 
   if not low_memory:
-    args = list(batched_args) + list(nonbatched_args)
+    args = [*batched_args, *nonbatched_args]
     return module(*args)
 
   if output_subbatch_dim is None:
     output_subbatch_dim = input_subbatch_dim
 
   def run_module(*batched_args):
-    args = list(batched_args) + list(nonbatched_args)
+    args = [*batched_args, *nonbatched_args]
     return module(*args)
   sharded_module = sharded_apply(run_module,
                                  shard_size=subbatch_size,

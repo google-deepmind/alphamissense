@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -98,8 +98,8 @@ def _check_residue_distances(all_positions: np.ndarray,
         distance = np.linalg.norm(this_calpha - prev_calpha)
         if distance > max_ca_ca_distance:
           raise CaDistanceError(
-              'The distance between residues %d and %d is %f > limit %f.' % (
-                  i, i + 1, distance, max_ca_ca_distance))
+              f'The distance between residues {i} and {i + 1} is '
+              f'{distance=} > limit {max_ca_ca_distance=}.')
       prev_calpha = this_calpha
     prev_is_unmasked = this_is_unmasked
 

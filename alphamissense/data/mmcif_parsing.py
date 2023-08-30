@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ import collections
 import dataclasses
 import functools
 import io
-from typing import Any, Mapping, Optional, Sequence, Tuple
+from typing import Any, Mapping, Optional, Sequence
 
 from absl import logging
 from Bio import PDB
@@ -102,7 +102,7 @@ class ParsingResult:
     errors: A dict mapping (file_id, chain_id) to any exception generated.
   """
   mmcif_object: Optional[MmcifObject]
-  errors: Mapping[Tuple[str, str], Any]
+  errors: Mapping[tuple[str, str], Any]
 
 
 class ParseError(Exception):

@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 from alphamissense.model.geometry import struct_of_array
-from alphamissense.model.geometry import utils
 
 Float = Union[float, jnp.ndarray]
 
@@ -111,7 +110,7 @@ class Vec3Array:
 
   @classmethod
   def from_array(cls, array):
-    return cls(*utils.unstack(array))
+    return cls(*[row for row in jnp.moveaxis(array, source=-1, destination=0)])
 
   def __getstate__(self):
     return (VERSION,

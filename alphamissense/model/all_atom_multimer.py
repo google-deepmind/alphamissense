@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 """Ops for all atom representations."""
 
-from typing import Dict, Optional
+from typing import Optional
 
 import jax
 import jax.numpy as jnp
@@ -276,7 +276,7 @@ def atom37_to_frames(
     aatype: jnp.ndarray,  # (...)
     all_atom_positions: geometry.Vec3Array,  # (..., 37)
     all_atom_mask: jnp.ndarray,  # (..., 37)
-) -> Dict[str, jnp.ndarray]:
+) -> dict[str, jnp.ndarray]:
   """Computes the frames for the up to 8 rigid groups for each residue."""
   # 0: 'backbone group',
   # 1: 'pre-omega-group', (empty)
@@ -498,7 +498,7 @@ def between_residue_bond_loss(
     residue_index: jnp.ndarray,  # (N)
     aatype: jnp.ndarray,  # (N)
     tolerance_factor_soft=12.0,
-    tolerance_factor_hard=12.0) -> Dict[str, jnp.ndarray]:
+    tolerance_factor_hard=12.0) -> dict[str, jnp.ndarray]:
   """Flat-bottom loss to penalize structural violations between residues."""
   assert len(pred_atom_positions.shape) == 2
   assert len(pred_atom_mask.shape) == 2
@@ -599,7 +599,7 @@ def between_residue_clash_loss(
     residue_index: jnp.ndarray,  # (N)
     asym_id: jnp.ndarray,  # (N)
     overlap_tolerance_soft=1.5,
-    overlap_tolerance_hard=1.5) -> Dict[str, jnp.ndarray]:
+    overlap_tolerance_hard=1.5) -> dict[str, jnp.ndarray]:
   """Loss to penalize steric clashes between residues."""
   assert len(pred_positions.shape) == 2
   assert len(atom_exists.shape) == 2
@@ -681,7 +681,7 @@ def within_residue_violations(
     dists_lower_bound: jnp.ndarray,  # (N, 14, 14)
     dists_upper_bound: jnp.ndarray,  # (N, 14, 14)
     tighten_bounds_for_loss=0.0,
-) -> Dict[str, jnp.ndarray]:
+) -> dict[str, jnp.ndarray]:
   """Find within-residue violations."""
   assert len(pred_positions.shape) == 2
   assert len(atom_exists.shape) == 2

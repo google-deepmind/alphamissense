@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import collections
 import functools
 import os
-from typing import Final, List, Mapping, Tuple
+from typing import Final, Mapping, Sequence
 
 import numpy as np
 import tree
@@ -373,7 +373,7 @@ residue_atom_renaming_swaps = {
     'TYR': {'CD1': 'CD2', 'CE1': 'CE2'},
 }
 
-# Van der Waals radii [Angstroem] of the atoms (from Wikipedia)
+# Van der Waals radii [Angstrom] of the atoms (from Wikipedia)
 van_der_waals_radius = {
     'C': 1.7,
     'N': 1.55,
@@ -389,9 +389,9 @@ BondAngle = collections.namedtuple(
 
 
 @functools.lru_cache(maxsize=None)
-def load_stereo_chemical_props() -> Tuple[Mapping[str, List[Bond]],
-                                          Mapping[str, List[Bond]],
-                                          Mapping[str, List[BondAngle]]]:
+def load_stereo_chemical_props() -> tuple[Mapping[str, Sequence[Bond]],
+                                          Mapping[str, Sequence[Bond]],
+                                          Mapping[str, Sequence[BondAngle]]]:
   """Load stereo_chemical_props.txt into a nice structure.
 
   Load literature values for bond lengths and bond angles and translate
@@ -910,7 +910,7 @@ def make_atom14_dists_bounds(overlap_tolerance=1.5,
         restype_atom14_bond_upper_bound[restype, atom2_idx, atom1_idx] = upper
 
     # overwrite lower and upper bounds for bonds and angles
-    for b in residue_bonds[resname] + residue_virtual_bonds[resname]:
+    for b in (*residue_bonds[resname], *residue_virtual_bonds[resname]):
       atom1_idx = atom_list.index(b.atom1_name)
       atom2_idx = atom_list.index(b.atom2_name)
       lower = b.length - bond_length_tolerance_factor * b.stddev

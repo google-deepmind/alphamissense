@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,15 +29,14 @@ import numpy as np
 def stable_softmax(logits: jax.Array) -> jax.Array:
   """Numerically stable softmax for (potential) bfloat 16."""
   if logits.dtype == jnp.float32:
-    output = jax.nn.softmax(logits)
+    return jax.nn.softmax(logits)
   elif logits.dtype == jnp.bfloat16:
     # Need to explicitly do softmax in float32 to avoid numerical issues
     # with large negatives. Large negatives can occur if trying to mask
     # by adding on large negative logits so that things softmax to zero.
-    output = jax.nn.softmax(logits.astype(jnp.float32)).astype(jnp.bfloat16)
+    return jax.nn.softmax(logits.astype(jnp.float32)).astype(jnp.bfloat16)
   else:
     raise ValueError(f'Unexpected input dtype {logits.dtype}')
-  return output
 
 
 def bfloat16_creator(next_creator, shape, dtype, init, context):
@@ -62,6 +61,7 @@ def bfloat16_context():
 
 
 def final_init(config):
+  """Converts the weight initialization config to the Haiku module argument."""
   if config.zero_init:
     return 'zeros'
   else:

@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
 
 from __future__ import annotations
 import dataclasses
+import itertools
 
 import jax
 import jax.numpy as jnp
 import numpy as np
 from alphamissense.model.geometry import struct_of_array
-from alphamissense.model.geometry import utils
 from alphamissense.model.geometry import vector
 
 COMPONENTS = ['xx', 'xy', 'xz', 'yx', 'yy', 'yz', 'zx', 'zy', 'zz']
@@ -101,9 +101,8 @@ class Rot3Array:
   @classmethod
   def from_array(cls, array: jnp.ndarray) -> Rot3Array:
     """Construct Rot3Array Matrix from array of shape. [..., 3, 3]."""
-    unstacked = utils.unstack(array, axis=-2)
-    unstacked = sum([utils.unstack(x, axis=-1) for x in unstacked], [])
-    return cls(*unstacked)
+    return cls(*[
+        array[..., i, j] for i, j in itertools.product(range(3), range(3))])
 
   def to_array(self) -> jnp.ndarray:
     """Convert Rot3Array to array of shape [..., 3, 3]."""
@@ -143,8 +142,7 @@ class Rot3Array:
   def random_uniform(cls, key, shape, dtype=jnp.float32) -> Rot3Array:
     """Samples uniform random Rot3Array according to Haar Measure."""
     quat_array = jax.random.normal(key, tuple(shape) + (4,), dtype=dtype)
-    quats = utils.unstack(quat_array)
-    return cls.from_quaternion(*quats)
+    return cls.from_quaternion(*[quat_array[..., i] for i in range(4)])
 
   def __getstate__(self):
     return (VERSION,

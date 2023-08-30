@@ -1,4 +1,4 @@
-# Copyright 2021 DeepMind Technologies Limited
+# Copyright 2023 DeepMind Technologies Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ from urllib import request
 
 from absl import logging
 
+# Internal import (7716).
 from alphamissense.data import parsers
 from alphamissense.data.tools import utils
-# Internal import (7716).
 
 
 class Jackhmmer:
@@ -60,9 +60,9 @@ class Jackhmmer:
       filter_f1: MSV and biased composition pre-filter, set to >1.0 to turn off.
       filter_f2: Viterbi pre-filter, set to >1.0 to turn off.
       filter_f3: Forward pre-filter, set to >1.0 to turn off.
-      incdom_e: Domain e-value criteria for inclusion of domains in MSA/next
+      incdom_e: Domain e-value criterion for inclusion of domains in MSA/next
         round.
-      dom_e: Domain e-value criteria for inclusion in tblout.
+      dom_e: Domain e-value criterion for inclusion in tblout.
       num_streamed_chunks: Number of database chunks to stream over.
       streaming_callback: Callback function run after each chunk iteration with
         the iteration number as argument.
@@ -173,7 +173,7 @@ class Jackhmmer:
       self,
       input_fasta_paths: Sequence[str],
       max_sequences: Optional[int] = None,
-    ) -> Sequence[Sequence[Mapping[str, Any]]]:
+  ) -> Sequence[Sequence[Mapping[str, Any]]]:
     """Queries the database for multiple queries using Jackhmmer."""
     if self.num_streamed_chunks is None:
       single_chunk_results = []

@@ -1,4 +1,4 @@
-# alphamissense
+# AlphaMissense
 
 TODO(b/296187408): Add a description for your new project, explain what is
 being released here, etc... Additional, the following sections are normally

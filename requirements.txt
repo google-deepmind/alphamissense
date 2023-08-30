@@ -1,0 +1,9 @@
+absl-py==1.0.0
+biopython==1.79
+dm-haiku==0.0.10
+dm-tree==0.1.8
+immutabledict==2.0.0
+jax==0.4.14
+ml-collections==0.1.0
+numpy==1.24.3
+scipy==1.11.1

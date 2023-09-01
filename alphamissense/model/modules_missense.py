@@ -225,68 +225,20 @@ class LogitDiffPathogenicityHead(hk.Module):
     return loss
 
 
-class AlphaFoldIteration(hk.Module):
-  """A single recycling iteration of AlphaFold architecture.
-
-  Computes ensembled (averaged) representations from the provided features.
-  These representations are then passed to the various heads
-  that have been requested by the configuration file. Each head also returns a
-  loss which is combined as a weighted sum to produce the total loss.
-
-  Jumper et al. (2021) Suppl. Alg. 2 "Inference" lines 3-22
-  """
-
-  def __init__(self,
-               config: ml_collections.ConfigDict,
-               global_config: ml_collections.ConfigDict,
-               name: str = 'alphafold_iteration'):
-    super().__init__(name=name)
-    self.config = config
-    self.global_config = global_config
-
-  def __call__(self,
-               batch: FeatureDict,
-               is_training: bool,
-               safe_key: prng.SafeKey,
-               ) -> OutputDict:
-
-    # Compute representations for each batch element and average.
-    evoformer_module = EmbeddingsAndEvoformer(
-        self.config.embeddings_and_evoformer, self.global_config)
-    representations = evoformer_module(batch, is_training, safe_key)
-
-    self.representations = representations
-    self.batch = batch
-    self.heads = {}
-    for head_name, head_config in sorted(self.config.heads.items()):
-      if not head_config.weight:
-        continue  # Do not instantiate zero-weight heads.
-
-      head_factory = {
-          'masked_msa': modules.MaskedMsaHead,
-          'distogram': modules.DistogramHead,
-          'structure_module': folding_multimer.StructureModule,
-          'logit_diff': LogitDiffPathogenicityHead,
-      }[head_name]
-      self.heads[head_name] = (head_config,
-                               head_factory(head_config, self.global_config))
-    ret = {}
-    ret['representations'] = representations
-    for name, (_, module) in self.heads.items():
-      ret[name] = module(representations, batch, is_training)
-    return ret
-
-
-class AlphaFold(hk.Module):
-  """AlphaFold model with recycling.
+class AlphaMissense(hk.Module):
+  """AlphaMissense model with recycling.
 
   Changes relative to the original AlphaFold 2 implementation are described in
-  the Methods section of Cheng et al. (2023).
+  the Methods section of Cheng et al. (2023). These changes include: (i) how
+  the MSA and "pair" embeddings are initialized; (ii) how the "single"
+  embedding is computed; (iii) the MSA embedding is not recycled. Therefore,
+  checkpoints produced with AlphaFold 2 or AlphaFold Multimer are not
+  compatible with AlphaMissense.
   """
 
   def __init__(self,
                config: ml_collections.ConfigDict,
-               name: str = 'alphafold'):
+               name: str = 'alphamissense'):
     super().__init__(name=name)
     self.config = config
     self.global_config = config.global_config
@@ -299,7 +251,7 @@ class AlphaFold(hk.Module):
       return_representations: bool,
       ) -> OutputDict:
 
-    impl = AlphaFoldIteration(self.config, self.global_config)
+    impl = AlphaMissenseIteration(self.config, self.global_config)
     num_residues = batch['aatype'].shape[0]
     safe_key = prng.SafeKey(hk.next_rng_key())
 
@@ -367,13 +319,52 @@ class AlphaFold(hk.Module):
     return ret
 
 
-class EmbeddingsAndEvoformer(hk.Module):
-  """Embeds the input data and runs Evoformer.
+class AlphaMissenseIteration(hk.Module):
+  """A single recycling iteration of AlphaMissense architecture."""
 
-  Produces the MSA, single and pair representations.
-  Changes relative to the original AlphaFold 2 implementation are described in
-  the Methods section of Cheng et al. (2023).
-  """
+  def __init__(self,
+               config: ml_collections.ConfigDict,
+               global_config: ml_collections.ConfigDict,
+               name: str = 'alphafold_iteration'):
+    super().__init__(name=name)
+    self.config = config
+    self.global_config = global_config
+
+  def __call__(self,
+               batch: FeatureDict,
+               is_training: bool,
+               safe_key: prng.SafeKey,
+               ) -> OutputDict:
+
+    # Compute representations for each batch element and average.
+    evoformer_module = EmbeddingsAndEvoformer(
+        self.config.embeddings_and_evoformer, self.global_config)
+    representations = evoformer_module(batch, is_training, safe_key)
+
+    self.representations = representations
+    self.batch = batch
+    self.heads = {}
+    for head_name, head_config in sorted(self.config.heads.items()):
+      if not head_config.weight:
+        continue  # Do not instantiate zero-weight heads.
+
+      head_factory = {
+          'masked_msa': modules.MaskedMsaHead,
+          'distogram': modules.DistogramHead,
+          'structure_module': folding_multimer.StructureModule,
+          'logit_diff': LogitDiffPathogenicityHead,
+      }[head_name]
+      self.heads[head_name] = (head_config,
+                               head_factory(head_config, self.global_config))
+    ret = {}
+    ret['representations'] = representations
+    for name, (_, module) in self.heads.items():
+      ret[name] = module(representations, batch, is_training)
+    return ret
+
+
+class EmbeddingsAndEvoformer(hk.Module):
+  """Embeds the input data and runs Evoformer."""
 
   def __init__(self, config, global_config, name='evoformer'):
     super().__init__(name=name)
@@ -590,7 +581,7 @@ class RunModel:
     self.config = config
     self.params = params
     def _forward_fn(batch):
-      model = AlphaFold(self.config.model)
+      model = AlphaMissense(self.config.model)
       return model(batch, is_training=False, return_representations=False)
 
     self.apply = jax.jit(hk.transform(_forward_fn).apply)

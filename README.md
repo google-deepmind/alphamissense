@@ -75,7 +75,7 @@ from alphamissense.model import config
 from alphamissense.model import modules_missense
 
 def _forward_fn(batch):
-    model = AlphaFold(config.model_config().model)
+    model = modules_missense.AlphaMissense(config.model_config().model)
     return model(batch, is_training=False, return_representations=False)
 
 random_seed = 0
@@ -85,6 +85,7 @@ params = hk.transform(_forward_fn).init(prng, sample)
 apply = jax.jit(hk.transform(_forward_fn).apply)
 output = apply(params, prng, sample)
 ```
+For example, at this point the score of the variant would be stored in `output['logit_diff']['variant_pathogenicity']`.
 
 
 ## Genetic databases

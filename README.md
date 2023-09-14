@@ -1,6 +1,6 @@
 # AlphaMissense
 
-This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the AlphaMissense 2023 publication <link to publication> only and will not be updated or maintained moving forward. As part of our commitment to releasing our research safely and responsibly we will not be sharing model weights for this work.
+This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the [AlphaMissense 2023 publication](https://doi.org/10.1126/science.adg7492) only and will not be updated or maintained moving forward. As part of our commitment to releasing our research safely and responsibly we will not be sharing model weights for this work.
 
 We forked the [AlphaFold repository](https://github.com/deepmind/alphafold) (6c4d833fbd1c6b8e7c9a21dae5d4ada2ce777e10) and modified it to implement AlphaMissense.
 
@@ -14,8 +14,8 @@ What we don’t provide:
 
 
 ## Access AlphaMissense predictions:
-Predictions for human major transcripts and isoforms are provided here <GCP>.
-You can use these files with the VEP tool and AlphaMissense plug-in <VEP>.
+Predictions for human major transcripts and isoforms are provided [here](https://console.cloud.google.com/storage/browser/dm_alphamissense).
+You can use these files with the VEP tool and [AlphaMissense plug-in](https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html).
 
 
 ## Installation
@@ -53,7 +53,7 @@ from alphamissense.data import pipeline_missense
 
 protein_sequence_file = ...
 pipeline = pipeline_missense.DataPipeline(
-    jackhmmer_binary_path=...,  # Typically '/usr/bin/jackhmmer'
+    jackhmmer_binary_path=...,  # Typically '/usr/bin/jackhmmer'.
     protein_sequence_file=protein_sequence_file,
     uniref90_database_path=DATABASES_DIR + '/uniref90/uniref90.fasta',
     mgnify_database_path=DATABASES_DIR + '/mgnify/mgy_clusters_2022_05.fa',
@@ -147,10 +147,10 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 ### AlphaMissense predictions License
-AlphaMissense predictions are made available under the terms of the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license <GCP link>. You can find details at: https://creativecommons.org/licenses/by-nc-sa/4.0/
+AlphaMissense predictions are made available under the terms of the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license. You can find details at: https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 ### Third-party software
-Use of the third-party software, libraries or code referred to in the Acknowledgements section above may be governed by separate terms and conditions or license provisions. Your use of the third-party software, libraries or code is subject to any such terms and you should check that you can comply with any applicable restrictions or terms and conditions before use.
+Use of the third-party software, libraries or code referred to in the [Acknowledgements](#acknowledgements) section above may be governed by separate terms and conditions or license provisions. Your use of the third-party software, libraries or code is subject to any such terms and you should check that you can comply with any applicable restrictions or terms and conditions before use.
 
 ### Mirrored Databases
 The following databases have been mirrored by DeepMind, and are available with reference to the following:

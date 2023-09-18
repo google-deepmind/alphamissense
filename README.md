@@ -1,13 +1,15 @@
 # AlphaMissense
 
-This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the [AlphaMissense 2023 publication](https://doi.org/10.1126/science.adg7492) only and will not be updated or maintained moving forward. As part of our commitment to releasing our research safely and responsibly we will not be sharing model weights for this work.
+This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the [AlphaMissense 2023 publication](https://doi.org/10.1126/science.adg7492) and will not be actively maintained moving forward.
 
 We forked the [AlphaFold repository](https://github.com/deepmind/alphafold) (6c4d833fbd1c6b8e7c9a21dae5d4ada2ce777e10) and modified it to implement AlphaMissense.
 
 What we provide:
-*   Detailed implementation of the AlphaMissense model ([modules_missense.py](https://github.com/deepmind/alphamissense/blob/main/alphamissense/model/modules_missense.py))
+*   Detailed implementation of the AlphaMissense model and training losses ([modules_missense.py](https://github.com/deepmind/alphamissense/blob/main/alphamissense/model/modules_missense.py))
 
-*   The data pipeline to create input features for inference ([pipeline_missense.py](https://github.com/deepmind/alphamissense/blob/main/alphamissense/data/pipeline_missense.py)). The data pipeline requires access to the protein structures of the AlphaFold Database hosted in Google Cloud Storage. Refer to the [AFDB readme file](https://github.com/deepmind/alphafold/tree/main/afdb)) to learn how to access the dataset.
+*   The data pipeline to create input features for inference ([pipeline_missense.py](https://github.com/deepmind/alphamissense/blob/main/alphamissense/data/pipeline_missense.py)). The data pipeline requires access to genetic databases for multiple sequence alignments and, if using spatial cropping, protein structures of the AlphaFold Database hosted in Google Cloud Storage. Please see the section for genetic databases and [AFDB readme file](https://github.com/deepmind/alphafold/tree/main/afdb)) to learn how to access these datasets.
+
+* Pre-computed predictions for all possible human amino acid substitutions and missense variants ([hosted here](https://console.cloud.google.com/storage/browser/dm_alphamissense)).
 
 What we don’t provide:
 *   The trained AlphaMissense model weights.
@@ -90,7 +92,7 @@ For example, at this point the score of the variant would be stored in `output['
 
 ## Genetic databases
 
-AlphaMissense needs multiple genetic (sequence) databases to run:
+AlphaMissense used multiple genetic (sequence) databases for multiple sequence alignments:
 
 *   [BFD](https://bfd.mmseqs.com/),
 *   [MGnify](https://www.ebi.ac.uk/metagenomics/),
@@ -108,10 +110,8 @@ Any publication that discloses findings arising from using this source code shou
   journal      = {Science},
   title        = {Accurate proteome-wide missense variant effect prediction with AlphaMissense},
   year         = {2023},
-  elocation-id = {},
-  doi          = {},
-  URL          = {},
-  eprint       = {},
+  doi          = {10.1126/science.adg7492},
+  URL          = {https://doi.org/10.1126/science.adg7492},
 }
 ```
 
@@ -151,10 +151,3 @@ AlphaMissense predictions are made available under the terms of the Creative Com
 
 ### Third-party software
 Use of the third-party software, libraries or code referred to in the [Acknowledgements](#acknowledgements) section above may be governed by separate terms and conditions or license provisions. Your use of the third-party software, libraries or code is subject to any such terms and you should check that you can comply with any applicable restrictions or terms and conditions before use.
-
-### Mirrored Databases
-The following databases have been mirrored by DeepMind, and are available with reference to the following:
-*   BFD (unmodified), by Steinegger M. and Söding J., available under a Creative Commons Attribution-ShareAlike 4.0 International License.
-*   BFD (modified), by Steinegger M. and Söding J., modified by DeepMind, available under a Creative Commons Attribution-ShareAlike 4.0 International License. See the Methods section of the paper for details.
-*   Uniref30: v2021_03 (unmodified), by Mirdita M. et al., available under a Creative Commons Attribution-ShareAlike 4.0 International License.
-*   MGnify: v2022_05 (unmodified), by Mitchell AL et al., available free of all copyright restrictions and made fully and freely available for both non-commercial and commercial use under CC0 1.0 Universal (CC0 1.0) Public Domain Dedication.

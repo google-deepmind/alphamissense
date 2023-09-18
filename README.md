@@ -2,7 +2,7 @@
 
 This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the [AlphaMissense 2023 publication](https://doi.org/10.1126/science.adg7492) and will not be actively maintained moving forward.
 
-We forked the [AlphaFold repository](https://github.com/deepmind/alphafold) (6c4d833fbd1c6b8e7c9a21dae5d4ada2ce777e10) and modified it to implement AlphaMissense.
+We forked the [AlphaFold repository](https://github.com/google-deepmind/alphafold/tree/v2.3.2) and modified it to implement AlphaMissense.
 
 What we provide:
 *   Detailed implementation of the AlphaMissense model and training losses ([modules_missense.py](https://github.com/deepmind/alphamissense/blob/main/alphamissense/model/modules_missense.py))

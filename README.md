@@ -1,6 +1,6 @@
 # AlphaMissense
 
-This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the [AlphaMissense 2023 publication](https://doi.org/10.1126/science.adg7492) and will not be actively maintained moving forward.
+This package provides the AlphaMissense model implementation. This implementation is provided for reference alongside the [AlphaMissense 2023 publication](https://www.science.org/doi/10.1126/science.adg7492) and will not be actively maintained moving forward.
 
 We forked the [AlphaFold repository](https://github.com/google-deepmind/alphafold/tree/v2.3.2) and modified it to implement AlphaMissense.
 
@@ -111,7 +111,7 @@ Any publication that discloses findings arising from using this source code shou
   title        = {Accurate proteome-wide missense variant effect prediction with AlphaMissense},
   year         = {2023},
   doi          = {10.1126/science.adg7492},
-  URL          = {https://doi.org/10.1126/science.adg7492},
+  URL          = {https://www.science.org/doi/10.1126/science.adg7492},
 }
 ```
 

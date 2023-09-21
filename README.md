@@ -47,7 +47,7 @@ venv/bin/python test/test_installation.py
 
 
 ## Usage
-Because we are not releasing the trained model weights, the code is not meant to be used to reproduce the AlphaMissense scores, but as a reference for future research. We are releasing an implementation of the data pipeline and the model used for inference.
+Because we are not releasing the trained model weights, the code is not meant to be used for making new predictions, but serve as an implementation reference. We are releasing the data pipeline, model and loss function code.
 
 The data pipeline requires a FASTA file (i.e. `protein_sequence_file`) which should contain all target sequences, and the genetic sequence databases outlined in the next section.
 ```python

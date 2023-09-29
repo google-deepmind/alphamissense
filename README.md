@@ -17,7 +17,7 @@ What we don’t provide:
 
 ## Access AlphaMissense predictions:
 Predictions for human major transcripts and isoforms are provided [here](https://console.cloud.google.com/storage/browser/dm_alphamissense).
-You can use these files with the VEP tool and [AlphaMissense plug-in](https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html).
+You can use these files with the Ensembl VEP tool and [AlphaMissense plug-in](https://www.ensembl.org/info/docs/tools/vep/script/vep_plugins.html).
 
 
 ## Installation
